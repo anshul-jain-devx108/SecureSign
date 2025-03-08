@@ -12,7 +12,6 @@ RUN npm install --omit=dev
 COPY . .
 
 # Set environment variable
-ENV PORT=8080
 
 # Expose the required port
 EXPOSE 8080
