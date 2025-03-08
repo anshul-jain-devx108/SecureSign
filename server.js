@@ -84,7 +84,7 @@ cron.schedule("*/30 * * * *", async () => {
 //   console.log(`🚀 Server running on port ${PORT}`);
 // });
 // Listen on 0.0.0.0 instead of localhost
-const PORT = process.env.port || 8080;
+const PORT = process.env.port || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
