@@ -1,23 +1,21 @@
-# Use an official Node.js runtime as a parent image
+# Use a lightweight Node.js image
 FROM node:18-slim
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first for better caching
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install --omit=dev
 
 # Copy the rest of the application files
 COPY . .
 
-# Set environment variable for Cloud Run
+# Set environment variable
 ENV PORT=8080
 
-# Expose the port Cloud Run expects
+# Expose the required port
 EXPOSE 8080
 
-# Command to start the server
+# Start the application
 CMD ["node", "server.js"]
