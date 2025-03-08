@@ -14,7 +14,7 @@ COPY . .
 # Set environment variable
 
 # Expose the required port
-EXPOSE 8080
+EXPOSE 5000
 
 # Start the application
 CMD ["node", "server.js"]
