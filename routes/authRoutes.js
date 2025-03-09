@@ -56,14 +56,14 @@ router.get("/callback", async (req, res) => {
     res.cookie("authToken", tokens.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
     });
 
     res.cookie("userId", userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict", // Strict
+      sameSite: "None", // Strict
       maxAge: 24 * 60 * 60 * 1000,
     });
 
