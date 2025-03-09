@@ -41,7 +41,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // 🔹 Secure cookies in production
-      sameSite: "Strict",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
     },
   })
