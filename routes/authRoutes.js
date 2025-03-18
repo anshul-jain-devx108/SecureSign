@@ -68,7 +68,7 @@ router.get("/callback", async (req, res) => {
     });
 
     // Redirect to frontend dashboard
-    // res.redirect("http://localhost:8080/dashboard"); // 🔹 Change to your frontend URL
+    res.redirect("http://localhost:8080/dashboard"); // 🔹 Change to your frontend URL
     // res.json({ message: "Login successful", user: req.user });  // ✅ Send a response instead
 
   } catch (error) {
