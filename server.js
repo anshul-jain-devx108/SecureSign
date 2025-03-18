@@ -18,7 +18,7 @@ if (!process.env.SESSION_SECRET) {
 }
 
 // ✅ Configure CORS securely
-const allowedOrigins = ["http://localhost:8080"]; // 🔹 Add production frontend domain later
+const allowedOrigins = ["http://localhost:8081"]; // 🔹 Add production frontend domain later
 
 app.use(
   cors({
