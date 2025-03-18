@@ -59,6 +59,8 @@ const getAuthURL = () => {
       "https://www.googleapis.com/auth/gmail.readonly",
       "https://www.googleapis.com/auth/spreadsheets",
       "https://www.googleapis.com/auth/calendar",
+      "https://www.googleapis.com/auth/gmail.compose",  // Added
+      "https://www.googleapis.com/auth/gmail.send",     // Added
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile"
     ],
