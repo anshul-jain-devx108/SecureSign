@@ -64,8 +64,9 @@ const getAuthURL = () => {
       "https://www.googleapis.com/auth/gmail.send",     // Added
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile"
-      "https://www.googleapis.com/auth/drive.file", // Added: Read and write access to app-created files
-      "https://www.googleapis.com/auth/drive"   
+      "https://www.googleapis.com/auth/userinfo.profile"
+      "https://www.googleapis.com/auth/drive.file", 
+
     ],
     prompt: "consent",
   });
