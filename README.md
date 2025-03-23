@@ -88,5 +88,5 @@ This API provides authentication and authorization services using Google OAuth2.
 - Add API rate limiting for enhanced security.
 
 ---
-**Author:** [Your Name]  
+**Author:** [Anshul Jain]  
 **Version:** 1.0.0
