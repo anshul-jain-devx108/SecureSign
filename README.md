@@ -1,89 +1,92 @@
-Here's the code for your README file. You can copy and paste this into your `README.md` file and customize it as needed:
+# Centralized Authentication Service API Documentation
 
-```markdown
-# SecureSign
+## Overview
+This API provides authentication and authorization services using Google OAuth2. It securely stores user credentials and tokens in Firebase Firestore and supports automatic token refresh via a scheduled job.
 
-![License](https://img.shields.io/github/license/anshul-jain-devx108/SecureSign)
-![Issues](https://img.shields.io/github/issues/anshul-jain-devx108/SecureSign)
-![Stars](https://img.shields.io/github/stars/anshul-jain-devx108/SecureSign)
+## Technologies Used
+- **Node.js** with Express.js
+- **Firebase Firestore** for data storage
+- **Google OAuth2 API** for authentication
+- **Docker** for containerization
+- **Winston** for logging
+- **Node-cron** for scheduled token refresh
 
-SecureSign is a secure and efficient signing solution built with JavaScript and Docker.
-
-![SecureSign Banner](path/to/your/banner/image.png)
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
-## Features
-
-- **Secure Signing**: Provides a secure way to sign documents.
-- **Easy Integration**: Integrates seamlessly with your existing applications.
-- **High Performance**: Optimized for speed and reliability.
-
-## Installation
+## Setup Instructions
 
 ### Prerequisites
-
-- [Node.js](https://nodejs.org/)
-- [Docker](https://www.docker.com/)
-
-### Steps
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/anshul-jain-devx108/SecureSign.git
+1. Create a `.env` file and add the following environment variables:
+   ```env
+   SESSION_SECRET=your_session_secret
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GOOGLE_REDIRECT_URI_PRODUCTION=your_google_redirect_uri
+   FIREBASE_PRIVATE_KEY=your_firebase_private_key
+   FIREBASE_PROJECT_ID=your_firebase_project_id
+   ENCRYPTION_KEY=your_encryption_key
    ```
-2. Navigate to the project directory:
-   ```sh
-   cd SecureSign
-   ```
-3. Install the dependencies:
+2. Install dependencies:
    ```sh
    npm install
    ```
-4. Run the application:
+3. Start the server:
    ```sh
    npm start
    ```
 
-## Usage
+## API Endpoints
 
-1. Open your browser and navigate to `http://localhost:3000`.
-2. Follow the on-screen instructions to sign your documents securely.
+### Authentication Routes
 
-## Contributing
+#### 1. Redirect to Google OAuth
+- **Endpoint:** `GET /auth/google`
+- **Description:** Redirects the user to the Google OAuth consent screen.
 
-We welcome contributions from the community! To contribute:
+#### 2. OAuth Callback
+- **Endpoint:** `GET /auth/callback`
+- **Description:** Handles Google OAuth response, exchanges code for tokens, and stores user info.
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -am 'Add new feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Create a new Pull Request.
+#### 3. Check Authentication Status
+- **Endpoint:** `GET /auth/check`
+- **Description:** Returns authentication status of the user.
+- **Headers:** Requires authentication token in cookies.
 
-Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+#### 4. Get Access Token (Auto-refresh if expired)
+- **Endpoint:** `GET /auth/token`
+- **Description:** Retrieves a valid access token for the authenticated user.
 
-## License
+#### 5. Logout
+- **Endpoint:** `GET /auth/logout`
+- **Description:** Logs out the user and clears session cookies.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+### Scheduled Tasks
+- **Token Refresh Job:** Runs every 30 minutes to refresh expired tokens.
 
-## Contact
+### Security Features
+- **Session management** using `express-session`
+- **Token encryption** using AES-256-CTR
+- **CORS configuration** for controlled access
+- **Rate limiting** to prevent abuse
+- **Secure cookies** enabled in production
 
-If you have any questions or feedback, feel free to reach out:
+## Docker Deployment
+1. Build the Docker image:
+   ```sh
+   docker build -t auth-service .
+   ```
+2. Run the container:
+   ```sh
+   docker run -p 5000:5000 --env-file .env auth-service
+   ```
 
-- **GitHub**: [anshul-jain-devx108](https://github.com/anshul-jain-devx108)
-- **Email**: your-email@example.com
+## Logging
+- **Winston logger** is used for structured logging.
+- Logs include errors, token refresh actions, and user authentication status.
+
+## Future Improvements
+- Implement role-based access control (RBAC).
+- Integrate additional authentication providers.
+- Add API rate limiting for enhanced security.
 
 ---
-
-*SecureSign - Secure your documents with ease!*
-```
-
-Remember to replace placeholders like `path/to/your/banner/image.png` and `your-email@example.com` with actual content related to your repository.
+**Author:** [Your Name]  
+**Version:** 1.0.0
