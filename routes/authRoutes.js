@@ -77,6 +77,43 @@ router.get("/check", checkAuth, (req, res) => {
 //   }
 // });
 
+// router.get("/callback", async (req, res) => {
+//   const code = req.query.code;
+//   if (!code) return res.status(400).json({ error: "❌ Missing authorization code" });
+
+//   try {
+//     const tokens = await getTokens(code);
+//     const userInfo = await getUserInfo(tokens.access_token);
+
+//     if (!userInfo.email) throw new Error("❌ No email found in Google response");
+
+//     const userId = userInfo.email;
+//     await saveUser(userId, tokens, userInfo);
+
+//     // Set cookies (or JWT if using local storage)
+//     res.cookie("authToken", tokens.access_token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "None",
+//       maxAge: 24 * 60 * 60 * 1000,
+//     });
+
+//     res.cookie("userId", userId, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "None",
+//       maxAge: 24 * 60 * 60 * 1000,
+//     });
+
+//     // ✅ Instead of redirecting, send JSON response
+//     res.json({ success: true, user: userInfo });
+
+//   } catch (error) {
+//     console.error("❌ Auth Callback Error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
 router.get("/callback", async (req, res) => {
   const code = req.query.code;
   if (!code) return res.status(400).json({ error: "❌ Missing authorization code" });
@@ -90,30 +127,13 @@ router.get("/callback", async (req, res) => {
     const userId = userInfo.email;
     await saveUser(userId, tokens, userInfo);
 
-    // Set cookies (or JWT if using local storage)
-    res.cookie("authToken", tokens.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie("userId", userId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    // ✅ Instead of redirecting, send JSON response
-    res.json({ success: true, user: userInfo });
-
+    // ✅ Redirect user to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${tokens.access_token}`);
   } catch (error) {
     console.error("❌ Auth Callback Error:", error);
     res.status(500).json({ error: error.message });
   }
 });
-
 
 // ✅ Get Access Token (Auto-Refresh if Expired)
 router.get("/token", async (req, res) => {
