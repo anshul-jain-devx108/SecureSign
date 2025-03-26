@@ -68,7 +68,7 @@ router.get("/callback", async (req, res) => {
     });
 
     // Redirect to frontend dashboard
-res.redirect(`https://learnsphere-32.lovable.app/dashboard?token=${tokens.access_token}`);
+res.redirect(`https://learn-sphere-ai-powered-educational-platform.vercel.app/dashboard?token=${tokens.access_token}`);
     // res.json({ message: "Login successful", user: req.user });  // ✅ Send a response instead
 
   } catch (error) {
