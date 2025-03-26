@@ -20,6 +20,7 @@ if (!process.env.SESSION_SECRET) {
 // ✅ Configure CORS securely
 const allowedOrigins = ["http://localhost:8080",
                         "https://learnsphere-32.lovable.app",
+                        "https://learn-sphere-ai-powered-educational-platform.vercel.app",
                        ]; // 🔹 Add production frontend domain later
 
 app.use(
