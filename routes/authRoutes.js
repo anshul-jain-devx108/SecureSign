@@ -33,49 +33,87 @@ router.get("/check", checkAuth, (req, res) => {
 });
 
 // ✅ Handle Google OAuth Callback
+// router.get("/callback", async (req, res) => {
+//   const code = req.query.code;
+//   if (!code) return res.status(400).json({ error: "❌ Missing authorization code" });
+
+//   try {
+//     // Exchange code for tokens
+//     const tokens = await getTokens(code);
+//     console.log("✅ Received Tokens:", tokens);
+
+//     // Fetch user info using access token
+//     const userInfo = await getUserInfo(tokens.access_token);
+//     console.log("👤 Google User Info:", userInfo);
+
+//     if (!userInfo.email) throw new Error("❌ No email found in Google response");
+
+//     const userId = userInfo.email; // Use email as document ID
+//     await saveUser(userId, tokens, userInfo);
+//     console.log(`✅ User ${userId} authenticated & saved`);
+
+//     // 🔹 Set secure, HTTP-only cookies for session management
+//     res.cookie("authToken", tokens.access_token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "None",
+//       maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+//     });
+
+//     res.cookie("userId", userId, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "None", // Strict
+//       maxAge: 24 * 60 * 60 * 1000,
+//     });
+
+//     // Redirect to frontend dashboard
+//     res.redirect("https://learn-sphere-ai-powered-educational-platform.vercel.app/dashboard"); // 🔹 Change to your frontend URL
+//     // res.json({ message: "Login successful", user: req.user });  // ✅ Send a response instead
+
+//   } catch (error) {
+//     console.error("❌ Auth Callback Error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
 router.get("/callback", async (req, res) => {
   const code = req.query.code;
   if (!code) return res.status(400).json({ error: "❌ Missing authorization code" });
 
   try {
-    // Exchange code for tokens
     const tokens = await getTokens(code);
-    console.log("✅ Received Tokens:", tokens);
-
-    // Fetch user info using access token
     const userInfo = await getUserInfo(tokens.access_token);
-    console.log("👤 Google User Info:", userInfo);
 
     if (!userInfo.email) throw new Error("❌ No email found in Google response");
 
-    const userId = userInfo.email; // Use email as document ID
+    const userId = userInfo.email;
     await saveUser(userId, tokens, userInfo);
-    console.log(`✅ User ${userId} authenticated & saved`);
 
-    // 🔹 Set secure, HTTP-only cookies for session management
+    // Set cookies (or JWT if using local storage)
     res.cookie("authToken", tokens.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.cookie("userId", userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None", // Strict
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    // Redirect to frontend dashboard
-    res.redirect("https://learn-sphere-ai-powered-educational-platform.vercel.app/dashboard"); // 🔹 Change to your frontend URL
-    // res.json({ message: "Login successful", user: req.user });  // ✅ Send a response instead
+    // ✅ Instead of redirecting, send JSON response
+    res.json({ success: true, user: userInfo });
 
   } catch (error) {
     console.error("❌ Auth Callback Error:", error);
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // ✅ Get Access Token (Auto-Refresh if Expired)
 router.get("/token", async (req, res) => {
