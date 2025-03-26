@@ -68,7 +68,7 @@ router.get("/callback", async (req, res) => {
     });
 
     // Redirect to frontend dashboard
-    res.redirect("https://learn-sphere-ai-powered-educational-platform.vercel.app/"); // 🔹 Change to your frontend URL
+    res.redirect("https://learn-sphere-ai-powered-educational-platform.vercel.app/dashboard"); // 🔹 Change to your frontend URL
     // res.json({ message: "Login successful", user: req.user });  // ✅ Send a response instead
 
   } catch (error) {
